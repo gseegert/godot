@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+from misc.utility.scons_hints import *
+
+Import("env")
+Import("env_modules")
+
+env_stg_sdf_physics = env_modules.Clone()
+
+# NOTE: For rendering module this may be helpful!
+# env_lightmapper_rd.GLSL_HEADER("lm_raster.glsl")
+# env_lightmapper_rd.GLSL_HEADER("lm_compute.glsl")
+# env_lightmapper_rd.GLSL_HEADER("lm_blendseams.glsl")
+# env_lightmapper_rd.Depends(Glob("*.glsl.gen.h"), ["lm_common_inc.glsl", "#glsl_builders.py"])
+
+# Add module source files
+env_stg_sdf_physics.add_source_files(env.modules_sources, "*.cpp")
