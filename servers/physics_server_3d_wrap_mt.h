@@ -90,6 +90,9 @@ public:
 	FUNCRID(concave_polygon_shape)
 	FUNCRID(heightmap_shape)
 	FUNCRID(custom_shape)
+#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+	FUNCRID(sdf_box_shape)
+#endif
 
 	FUNC2(shape_set_data, RID, const Variant &);
 	FUNC2(shape_set_custom_solver_bias, RID, real_t);

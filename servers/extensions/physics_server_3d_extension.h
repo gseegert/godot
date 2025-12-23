@@ -36,6 +36,9 @@
 #include "core/variant/typed_array.h"
 #include "servers/physics_server_3d.h"
 
+// For MODULE_STG_SDF_PHYSICS_ENABLED
+#include "modules/modules_enabled.gen.h"
+
 class PhysicsDirectBodyState3DExtension : public PhysicsDirectBodyState3D {
 	GDCLASS(PhysicsDirectBodyState3DExtension, PhysicsDirectBodyState3D);
 
@@ -221,6 +224,9 @@ public:
 	EXBIND0R(RID, concave_polygon_shape_create)
 	EXBIND0R(RID, heightmap_shape_create)
 	EXBIND0R(RID, custom_shape_create)
+#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+	EXBIND0R(RID, sdf_box_shape_create)
+#endif
 
 	EXBIND2(shape_set_data, RID, const Variant &)
 	EXBIND2(shape_set_custom_solver_bias, RID, real_t)

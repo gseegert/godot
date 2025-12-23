@@ -32,6 +32,9 @@
 
 #include "servers/physics_server_3d.h"
 
+// For MODULE_STG_SDF_PHYSICS_ENABLED
+#include "modules/modules_enabled.gen.h"
+
 class PhysicsDirectBodyState3DDummy : public PhysicsDirectBodyState3D {
 	GDCLASS(PhysicsDirectBodyState3DDummy, PhysicsDirectBodyState3D);
 
@@ -145,6 +148,9 @@ public:
 	virtual RID concave_polygon_shape_create() override { return RID(); }
 	virtual RID heightmap_shape_create() override { return RID(); }
 	virtual RID custom_shape_create() override { return RID(); }
+#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+	virtual RID sdf_box_shape_create() override { return RID(); }
+#endif
 
 	virtual void shape_set_data(RID p_shape, const Variant &p_data) override {}
 	virtual void shape_set_custom_solver_bias(RID p_shape, real_t p_bias) override {}

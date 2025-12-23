@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  box_shape_3d.h                                                        */
+/*  jolt_box_shape_3d.cpp                                                 */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             GODOT ENGINE                               */
@@ -28,39 +28,60 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#pragma once
-
-#include "scene/resources/3d/shape_3d.h"
-
-// For MODULE_STG_SDF_PHYSICS_ENABLED
-#include "modules/modules_enabled.gen.h"
-
-class BoxShape3D : public Shape3D {
-	GDCLASS(BoxShape3D, Shape3D);
-	Vector3 size;
-
-protected:
-	static void _bind_methods();
-#ifndef DISABLE_DEPRECATED
-	bool _set(const StringName &p_name, const Variant &p_value);
-	bool _get(const StringName &p_name, Variant &r_property) const;
-#endif // DISABLE_DEPRECATED
-
-	virtual void _update_shape() override;
+#include "jolt_sdf_box_shape_3d.h"
 
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 
-	BoxShape3D(RID p_shape);
+#include "../jolt_project_settings.h"
+#include "../misc/jolt_type_conversions.h"
+
+#include "Jolt/Physics/Collision/Shape/BoxShape.h"
+
+JPH::ShapeRefC JoltBoxSDFShape3D::_build() const {
+	const float min_half_extent = (float)half_extents[half_extents.min_axis_index()];
+	const float actual_margin = MIN(margin, min_half_extent * JoltProjectSettings::collision_margin_fraction);
+
+	const JPH::BoxShapeSettings shape_settings(to_jolt(half_extents), actual_margin);
+	const JPH::ShapeSettings::ShapeResult shape_result = shape_settings.Create();
+
+	ERR_FAIL_COND_V_MSG(shape_result.HasError(), nullptr, vformat("Failed to build Jolt Physics SDF box shape with %s. It returned the following error: '%s'. This shape belongs to %s.", to_string(), to_godot(shape_result.GetError()), _owners_to_string()));
+
+	return shape_result.Get();
+}
+
+Variant JoltBoxSDFShape3D::get_data() const {
+	return half_extents;
+}
+
+void JoltBoxSDFShape3D::set_data(const Variant &p_data) {
+	ERR_FAIL_COND(p_data.get_type() != Variant::VECTOR3);
+
+	const Vector3 new_half_extents = p_data;
+	if (unlikely(new_half_extents == half_extents)) {
+		return;
+	}
+
+	half_extents = new_half_extents;
+
+	destroy();
+}
+
+void JoltBoxSDFShape3D::set_margin(float p_margin) {
+	if (unlikely(margin == p_margin)) {
+		return;
+	}
+
+	margin = p_margin;
+
+	destroy();
+}
+
+String JoltBoxSDFShape3D::to_string() const {
+	return vformat("{half_extents=%v margin=%f}", half_extents, margin);
+}
+
+AABB JoltBoxSDFShape3D::get_aabb() const {
+	return AABB(-half_extents, half_extents * 2.0f);
+}
 
 #endif // MODULE_STG_SDF_PHYSICS_ENABLED
-
-public:
-	void set_size(const Vector3 &p_size);
-	Vector3 get_size() const;
-
-	virtual Vector<Vector3> get_debug_mesh_lines() const override;
-	virtual Ref<ArrayMesh> get_debug_arraymesh_faces(const Color &p_modulate) const override;
-	virtual real_t get_enclosing_radius() const override;
-
-	BoxShape3D();
-};

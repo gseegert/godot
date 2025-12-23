@@ -34,6 +34,9 @@
 #include "core/templates/local_vector.h"
 #include "servers/physics_server_3d.h"
 
+// For MODULE_STG_SDF_PHYSICS_ENABLED
+#include "modules/modules_enabled.gen.h"
+
 class GodotShape3D;
 
 class GodotShapeOwner3D {
@@ -509,3 +512,27 @@ struct GodotMotionShape3D : public GodotShape3D {
 
 	GodotMotionShape3D() { configure(AABB()); }
 };
+
+#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+
+// @TODO(MODULE_STG_SDF_PHYSICS_ENABLED) : Implement SDF box shape.
+class GodotSDFBoxShape3D : public GodotBoxShape3D {
+public:
+	GodotSDFBoxShape3D();
+	virtual ~GodotSDFBoxShape3D() { }
+
+	virtual PhysicsServer3D::ShapeType get_type() const override { return PhysicsServer3D::SHAPE_SDF_BOX; }
+
+	//virtual void project_range(const Vector3 &p_normal, const Transform3D &p_transform, real_t &r_min, real_t &r_max) const override;
+	//virtual Vector3 get_support(const Vector3 &p_normal) const override;
+	//virtual void get_supports(const Vector3 &p_normal, int p_max, Vector3 *r_supports, int &r_amount, FeatureType &r_type) const override;
+	//virtual bool intersect_segment(const Vector3 &p_begin, const Vector3 &p_end, Vector3 &r_result, Vector3 &r_normal, int &r_face_index, bool p_hit_back_faces) const override;
+	//virtual bool intersect_point(const Vector3 &p_point) const override;
+	//virtual Vector3 get_closest_point_to(const Vector3 &p_point) const override;
+	//virtual Vector3 get_moment_of_inertia(real_t p_mass) const override;
+
+	//virtual void set_data(const Variant &p_data) override;
+	//virtual Variant get_data() const override;
+};
+
+#endif

@@ -30,6 +30,9 @@
 
 #include "register_scene_types.h"
 
+// For MODULE_STG_SDF_PHYSICS_ENABLED
+#include "modules/modules_enabled.gen.h"
+
 #include "core/config/project_settings.h"
 #include "core/object/class_db.h"
 #include "core/os/os.h"
@@ -347,6 +350,9 @@
 #include "scene/resources/3d/separation_ray_shape_3d.h"
 #include "scene/resources/3d/sphere_shape_3d.h"
 #include "scene/resources/3d/world_boundary_shape_3d.h"
+#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#include "scene/resources/3d/sdf_box_shape_3d.h"
+#endif // MODULE_STG_SDF_PHYSICS_ENABLED
 #endif // PHYSICS_3D_DISABLED
 
 static Ref<ResourceFormatSaverText> resource_saver_text;
@@ -992,6 +998,9 @@ void register_scene_types() {
 	GDREGISTER_CLASS(WorldBoundaryShape3D);
 	GDREGISTER_CLASS(ConvexPolygonShape3D);
 	GDREGISTER_CLASS(ConcavePolygonShape3D);
+#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+	GDREGISTER_CLASS(SDFBoxShape3D);
+#endif // MODULE_STG_SDF_PHYSICS_ENABLED
 #endif // PHYSICS_3D_DISABLED
 	GDREGISTER_CLASS(World3D);
 

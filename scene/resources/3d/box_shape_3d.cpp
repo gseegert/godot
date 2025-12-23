@@ -118,3 +118,12 @@ BoxShape3D::BoxShape3D() :
 		Shape3D(PhysicsServer3D::get_singleton()->shape_create(PhysicsServer3D::SHAPE_BOX)) {
 	set_size(Vector3(1, 1, 1));
 }
+
+#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+
+BoxShape3D::BoxShape3D(RID p_shape) :
+		Shape3D(p_shape) {
+	set_size(Vector3(1, 1, 1));
+}
+
+#endif // MODULE_STG_SDF_PHYSICS_ENABLED

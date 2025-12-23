@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  box_shape_3d.h                                                        */
+/*  box_shape_3d.cpp                                                      */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             GODOT ENGINE                               */
@@ -28,39 +28,34 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#pragma once
-
-#include "scene/resources/3d/shape_3d.h"
-
-// For MODULE_STG_SDF_PHYSICS_ENABLED
-#include "modules/modules_enabled.gen.h"
-
-class BoxShape3D : public Shape3D {
-	GDCLASS(BoxShape3D, Shape3D);
-	Vector3 size;
-
-protected:
-	static void _bind_methods();
-#ifndef DISABLE_DEPRECATED
-	bool _set(const StringName &p_name, const Variant &p_value);
-	bool _get(const StringName &p_name, Variant &r_property) const;
-#endif // DISABLE_DEPRECATED
-
-	virtual void _update_shape() override;
+#include "sdf_box_shape_3d.h"
 
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 
-	BoxShape3D(RID p_shape);
+#include "scene/resources/3d/primitive_meshes.h"
+
+
+void SDFBoxShape3D::_update_shape() {
+	BoxShape3D::_update_shape();
+}
+
+void SDFBoxShape3D::_bind_methods() {
+	BoxShape3D::_bind_methods();
+}
+
+SDFBoxShape3D::SDFBoxShape3D(RID p_shape) :
+		BoxShape3D(p_shape) {
+
+	// @TODO(MODULE_STG_SDF_PHYSICS_ENABLED) : Initialize SDF shape here
+
+}
+
+SDFBoxShape3D::SDFBoxShape3D(PhysicsServer3D::ShapeType p_shape_type) :
+		SDFBoxShape3D(PhysicsServer3D::get_singleton()->shape_create(p_shape_type)) {
+}
+
+SDFBoxShape3D::SDFBoxShape3D() :
+		SDFBoxShape3D(PhysicsServer3D::SHAPE_SDF_BOX) {
+}
 
 #endif // MODULE_STG_SDF_PHYSICS_ENABLED
-
-public:
-	void set_size(const Vector3 &p_size);
-	Vector3 get_size() const;
-
-	virtual Vector<Vector3> get_debug_mesh_lines() const override;
-	virtual Ref<ArrayMesh> get_debug_arraymesh_faces(const Color &p_modulate) const override;
-	virtual real_t get_enclosing_radius() const override;
-
-	BoxShape3D();
-};

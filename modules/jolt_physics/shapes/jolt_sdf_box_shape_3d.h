@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  box_shape_3d.h                                                        */
+/*  jolt_box_shape_3d_sdf.h                                                   */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             GODOT ENGINE                               */
@@ -30,37 +30,33 @@
 
 #pragma once
 
-#include "scene/resources/3d/shape_3d.h"
-
 // For MODULE_STG_SDF_PHYSICS_ENABLED
 #include "modules/modules_enabled.gen.h"
 
-class BoxShape3D : public Shape3D {
-	GDCLASS(BoxShape3D, Shape3D);
-	Vector3 size;
-
-protected:
-	static void _bind_methods();
-#ifndef DISABLE_DEPRECATED
-	bool _set(const StringName &p_name, const Variant &p_value);
-	bool _get(const StringName &p_name, Variant &r_property) const;
-#endif // DISABLE_DEPRECATED
-
-	virtual void _update_shape() override;
-
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 
-	BoxShape3D(RID p_shape);
+#include "jolt_shape_3d.h"
 
-#endif // MODULE_STG_SDF_PHYSICS_ENABLED
+// @TODO(MODULE_STG_SDF_PHYSICS_ENABLED) : For now, the SDF implementation for Jolt will copy normal box shape
+class JoltBoxSDFShape3D final : public JoltShape3D {
+	Vector3 half_extents;
+	float margin = 0.04f;
+
+	virtual JPH::ShapeRefC _build() const override;
 
 public:
-	void set_size(const Vector3 &p_size);
-	Vector3 get_size() const;
+	virtual ShapeType get_type() const override { return ShapeType::SHAPE_BOX; }
+	virtual bool is_convex() const override { return true; }
 
-	virtual Vector<Vector3> get_debug_mesh_lines() const override;
-	virtual Ref<ArrayMesh> get_debug_arraymesh_faces(const Color &p_modulate) const override;
-	virtual real_t get_enclosing_radius() const override;
+	virtual Variant get_data() const override;
+	virtual void set_data(const Variant &p_data) override;
 
-	BoxShape3D();
+	virtual float get_margin() const override { return margin; }
+	virtual void set_margin(float p_margin) override;
+
+	virtual AABB get_aabb() const override;
+
+	String to_string() const;
 };
+
+#endif // MODULE_STG_SDF_PHYSICS_ENABLED

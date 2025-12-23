@@ -102,6 +102,17 @@ RID GodotPhysicsServer3D::custom_shape_create() {
 	ERR_FAIL_V(RID());
 }
 
+#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+
+RID GodotPhysicsServer3D::sdf_box_shape_create() {
+	GodotShape3D *shape = memnew(GodotSDFBoxShape3D);
+	RID rid = shape_owner.make_rid(shape);
+	shape->set_self(rid);
+	return rid;
+}
+
+#endif
+
 void GodotPhysicsServer3D::shape_set_data(RID p_shape, const Variant &p_data) {
 	GodotShape3D *shape = shape_owner.get_or_null(p_shape);
 	ERR_FAIL_NULL(shape);

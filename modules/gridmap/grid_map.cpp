@@ -30,6 +30,9 @@
 
 #include "grid_map.h"
 
+// For MODULE_STG_SDF_PHYSICS_ENABLED
+#include "modules/modules_enabled.gen.h"
+
 #include "core/io/marshalls.h"
 #include "core/templates/a_hash_map.h"
 #include "scene/resources/3d/mesh_library.h"
@@ -47,6 +50,9 @@
 #include "scene/resources/3d/height_map_shape_3d.h"
 #include "scene/resources/3d/shape_3d.h"
 #include "scene/resources/3d/sphere_shape_3d.h"
+#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#include "scene/resources/3d/sdf_box_shape_3d.h"
+#endif // MODULE_STG_SDF_PHYSICS_ENABLED
 #include "scene/resources/physics_material.h"
 #endif // PHYSICS_3D_DISABLED
 
@@ -1597,6 +1603,15 @@ void GridMap::navmesh_parse_source_geometry(const Ref<NavigationMesh> &p_navigat
 						}
 					}
 				} break;
+#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+				case PhysicsServer3D::SHAPE_SDF_BOX: {
+					Vector3 extents = data;
+					Array arr;
+					arr.resize(RS::ARRAY_MAX);
+					BoxMesh::create_mesh_array(arr, extents * 2.0);
+					p_source_geometry_data->add_mesh_array(arr, shapes[i]);
+				} break;
+#endif // MODULE_STG_SDF_PHYSICS_ENABLED
 				default: {
 					WARN_PRINT("Unsupported collision shape type.");
 				} break;

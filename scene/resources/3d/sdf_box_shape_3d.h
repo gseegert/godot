@@ -30,13 +30,33 @@
 
 #pragma once
 
-#include "scene/resources/3d/shape_3d.h"
-
 // For MODULE_STG_SDF_PHYSICS_ENABLED
 #include "modules/modules_enabled.gen.h"
 
-class BoxShape3D : public Shape3D {
-	GDCLASS(BoxShape3D, Shape3D);
+#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+
+#include "scene/resources/3d/box_shape_3d.h"
+#include "servers/physics_server_3d.h"
+
+class SDFBoxShape3D : public BoxShape3D {
+	GDCLASS(SDFBoxShape3D, BoxShape3D);
+
+protected:
+	static void _bind_methods();
+
+	virtual void _update_shape() override;
+
+	SDFBoxShape3D(RID p_shape);
+	SDFBoxShape3D(PhysicsServer3D::ShapeType p_shape_type);
+
+public:
+
+	SDFBoxShape3D();
+};
+
+/*
+class SDFBoxShape3D : public Shape3D {
+	GDCLASS(SDFBoxShape3D, Shape3D);
 	Vector3 size;
 
 protected:
@@ -48,11 +68,8 @@ protected:
 
 	virtual void _update_shape() override;
 
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
-
-	BoxShape3D(RID p_shape);
-
-#endif // MODULE_STG_SDF_PHYSICS_ENABLED
+	SDFBoxShape3D(RID p_shape);
+	SDFBoxShape3D(PhysicsServer3D::ShapeType p_shape_type);
 
 public:
 	void set_size(const Vector3 &p_size);
@@ -62,5 +79,8 @@ public:
 	virtual Ref<ArrayMesh> get_debug_arraymesh_faces(const Color &p_modulate) const override;
 	virtual real_t get_enclosing_radius() const override;
 
-	BoxShape3D();
-};
+	SDFBoxShape3D();
+}
+*/
+
+#endif // MODULE_STG_SDF_PHYSICS_ENABLED

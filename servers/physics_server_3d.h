@@ -35,6 +35,9 @@
 #include "core/io/resource.h"
 #include "core/object/gdvirtual.gen.inc"
 
+// For MODULE_STG_SDF_PHYSICS_ENABLED
+#include "modules/modules_enabled.gen.h"
+
 constexpr int MAX_CONTACTS_REPORTED_3D_MAX = 4096;
 
 class PhysicsDirectSpaceState3D;
@@ -260,6 +263,9 @@ public:
 		SHAPE_HEIGHTMAP, ///< dict( int:"width", int:"depth",float:"cell_size", float_array:"heights"
 		SHAPE_SOFT_BODY, ///< Used internally, can't be created from the physics server.
 		SHAPE_CUSTOM, ///< Server-Implementation based custom shape, calling shape_create() with this value will result in an error
+#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+		SHAPE_SDF_BOX, ///< SDF rounded box shape. Defined by vec3:"extents" and float:"roundness"
+#endif
 	};
 
 	RID shape_create(ShapeType p_shape);
@@ -274,6 +280,9 @@ public:
 	virtual RID concave_polygon_shape_create() = 0;
 	virtual RID heightmap_shape_create() = 0;
 	virtual RID custom_shape_create() = 0;
+#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+	virtual RID sdf_box_shape_create() = 0;
+#endif
 
 	virtual void shape_set_data(RID p_shape, const Variant &p_data) = 0;
 	virtual void shape_set_custom_solver_bias(RID p_shape, real_t p_bias) = 0;
