@@ -694,6 +694,8 @@ RID PhysicsServer3D::shape_create(ShapeType p_shape) {
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 		case SHAPE_SDF_BOX:
 			return sdf_box_shape_create();
+		case SHAPE_SDF_SPHERE:
+			return sdf_sphere_shape_create();
 #endif
 		default:
 			return RID();
@@ -715,6 +717,7 @@ void PhysicsServer3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("custom_shape_create"), &PhysicsServer3D::custom_shape_create);
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 	ClassDB::bind_method(D_METHOD("sdf_box_shape_create"), &PhysicsServer3D::sdf_box_shape_create);
+	ClassDB::bind_method(D_METHOD("sdf_sphere_shape_create"), &PhysicsServer3D::sdf_sphere_shape_create);
 #endif
 
 	ClassDB::bind_method(D_METHOD("shape_set_data", "shape", "data"), &PhysicsServer3D::shape_set_data);
@@ -1071,6 +1074,7 @@ void PhysicsServer3D::_bind_methods() {
 	BIND_ENUM_CONSTANT(SHAPE_CUSTOM);
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 	BIND_ENUM_CONSTANT(SHAPE_SDF_BOX);
+	BIND_ENUM_CONSTANT(SHAPE_SDF_SPHERE);
 #endif
 
 	BIND_ENUM_CONSTANT(AREA_PARAM_GRAVITY_OVERRIDE_MODE);

@@ -111,6 +111,13 @@ RID GodotPhysicsServer3D::sdf_box_shape_create() {
 	return rid;
 }
 
+RID GodotPhysicsServer3D::sdf_sphere_shape_create() {
+	GodotShape3D *shape = memnew(GodotSDFSphereShape3D);
+	RID rid = shape_owner.make_rid(shape);
+	shape->set_self(rid);
+	return rid;
+}
+
 #endif
 
 void GodotPhysicsServer3D::shape_set_data(RID p_shape, const Variant &p_data) {

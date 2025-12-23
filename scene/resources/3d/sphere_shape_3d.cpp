@@ -104,3 +104,12 @@ SphereShape3D::SphereShape3D() :
 		Shape3D(PhysicsServer3D::get_singleton()->shape_create(PhysicsServer3D::SHAPE_SPHERE)) {
 	set_radius(0.5);
 }
+
+#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+
+SphereShape3D::SphereShape3D(RID p_shape) :
+		Shape3D(p_shape) {
+	set_radius(0.5);
+}
+
+#endif // MODULE_STG_SDF_PHYSICS_ENABLED

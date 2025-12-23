@@ -149,6 +149,7 @@ void PhysicsServer3DExtension::_bind_methods() {
 	GDVIRTUAL_BIND(_custom_shape_create);
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 	GDVIRTUAL_BIND(_sdf_box_shape_create);
+	GDVIRTUAL_BIND(_sdf_sphere_shape_create);
 #endif
 
 	GDVIRTUAL_BIND(_shape_set_data, "shape", "data");

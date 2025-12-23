@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  box_shape_3d.h                                                        */
+/*  jolt_box_shape_3d.cpp                                                 */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             GODOT ENGINE                               */
@@ -28,30 +28,48 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#pragma once
-
-// For MODULE_STG_SDF_PHYSICS_ENABLED
-#include "modules/modules_enabled.gen.h"
+#include "jolt_sdf_sphere_shape_3d.h"
 
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 
-#include "scene/resources/3d/box_shape_3d.h"
-#include "servers/physics_server_3d.h"
+#include "../misc/jolt_type_conversions.h"
 
-class SDFBoxShape3D : public BoxShape3D {
-	GDCLASS(SDFBoxShape3D, BoxShape3D);
+#include "Jolt/Physics/Collision/Shape/SphereShape.h"
 
-protected:
-	static void _bind_methods();
+JPH::ShapeRefC JoltSphereSDFShape3D::_build() const {
+	ERR_FAIL_COND_V_MSG(radius <= 0.0f, nullptr, vformat("Failed to build Jolt Physics SDF sphere shape with %s. Its radius must be greater than 0. This shape belongs to %s.", to_string(), _owners_to_string()));
 
-	virtual void _update_shape() override;
+	const JPH::SphereShapeSettings shape_settings(radius);
+	const JPH::ShapeSettings::ShapeResult shape_result = shape_settings.Create();
+	ERR_FAIL_COND_V_MSG(shape_result.HasError(), nullptr, vformat("Failed to build Jolt Physics SDF sphere shape with %s. It returned the following error: '%s'. This shape belongs to %s.", to_string(), to_godot(shape_result.GetError()), _owners_to_string()));
 
-	SDFBoxShape3D(RID p_shape);
-	SDFBoxShape3D(PhysicsServer3D::ShapeType p_shape_type);
+	return shape_result.Get();
+}
 
-public:
+Variant JoltSphereSDFShape3D::get_data() const {
+	return radius;
+}
 
-	SDFBoxShape3D();
-};
+void JoltSphereSDFShape3D::set_data(const Variant &p_data) {
+	ERR_FAIL_COND(p_data.get_type() != Variant::FLOAT);
+
+	const float new_radius = p_data;
+	if (unlikely(new_radius == radius)) {
+		return;
+	}
+
+	radius = new_radius;
+
+	destroy();
+}
+
+AABB JoltSphereSDFShape3D::get_aabb() const {
+	const Vector3 half_extents(radius, radius, radius);
+	return AABB(-half_extents, half_extents * 2.0f);
+}
+
+String JoltSphereSDFShape3D::to_string() const {
+	return vformat("{radius=%f}", radius);
+}
 
 #endif // MODULE_STG_SDF_PHYSICS_ENABLED

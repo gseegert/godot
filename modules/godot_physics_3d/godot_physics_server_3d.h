@@ -93,6 +93,7 @@ public:
 	virtual RID custom_shape_create() override;
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 	virtual RID sdf_box_shape_create() override;
+	virtual RID sdf_sphere_shape_create() override;
 #endif
 
 	virtual void shape_set_data(RID p_shape, const Variant &p_data) override;

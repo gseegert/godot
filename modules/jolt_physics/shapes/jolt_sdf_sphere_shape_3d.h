@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  box_shape_3d.h                                                        */
+/*  jolt_box_shape_3d_sdf.h                                                   */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             GODOT ENGINE                               */
@@ -35,23 +35,27 @@
 
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 
-#include "scene/resources/3d/box_shape_3d.h"
-#include "servers/physics_server_3d.h"
+#include "jolt_shape_3d.h"
 
-class SDFBoxShape3D : public BoxShape3D {
-	GDCLASS(SDFBoxShape3D, BoxShape3D);
+// @TODO(MODULE_STG_SDF_PHYSICS_ENABLED) : For now, the SDF implementation for Jolt will copy normal shape
+class JoltSphereSDFShape3D final : public JoltShape3D {
+	float radius = 0.0f;
 
-protected:
-	static void _bind_methods();
-
-	virtual void _update_shape() override;
-
-	SDFBoxShape3D(RID p_shape);
-	SDFBoxShape3D(PhysicsServer3D::ShapeType p_shape_type);
+	virtual JPH::ShapeRefC _build() const override;
 
 public:
+	virtual ShapeType get_type() const override { return ShapeType::SHAPE_SPHERE; }
+	virtual bool is_convex() const override { return true; }
 
-	SDFBoxShape3D();
+	virtual Variant get_data() const override;
+	virtual void set_data(const Variant &p_data) override;
+
+	virtual float get_margin() const override { return 0.0f; }
+	virtual void set_margin(float p_margin) override {}
+
+	virtual AABB get_aabb() const override;
+
+	String to_string() const;
 };
 
 #endif // MODULE_STG_SDF_PHYSICS_ENABLED

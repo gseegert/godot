@@ -352,6 +352,7 @@
 #include "scene/resources/3d/world_boundary_shape_3d.h"
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 #include "scene/resources/3d/sdf_box_shape_3d.h"
+#include "scene/resources/3d/sdf_sphere_shape_3d.h"
 #endif // MODULE_STG_SDF_PHYSICS_ENABLED
 #endif // PHYSICS_3D_DISABLED
 
@@ -1000,6 +1001,7 @@ void register_scene_types() {
 	GDREGISTER_CLASS(ConcavePolygonShape3D);
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 	GDREGISTER_CLASS(SDFBoxShape3D);
+	GDREGISTER_CLASS(SDFSphereShape3D);
 #endif // MODULE_STG_SDF_PHYSICS_ENABLED
 #endif // PHYSICS_3D_DISABLED
 	GDREGISTER_CLASS(World3D);

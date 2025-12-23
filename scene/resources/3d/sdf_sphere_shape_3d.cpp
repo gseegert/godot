@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  box_shape_3d.h                                                        */
+/*  box_shape_3d.cpp                                                      */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             GODOT ENGINE                               */
@@ -28,30 +28,34 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#pragma once
-
-// For MODULE_STG_SDF_PHYSICS_ENABLED
-#include "modules/modules_enabled.gen.h"
+#include "sdf_sphere_shape_3d.h"
 
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 
-#include "scene/resources/3d/box_shape_3d.h"
-#include "servers/physics_server_3d.h"
+#include "scene/resources/3d/primitive_meshes.h"
 
-class SDFBoxShape3D : public BoxShape3D {
-	GDCLASS(SDFBoxShape3D, BoxShape3D);
 
-protected:
-	static void _bind_methods();
+void SDFSphereShape3D::_update_shape() {
+	SphereShape3D::_update_shape();
+}
 
-	virtual void _update_shape() override;
+void SDFSphereShape3D::_bind_methods() {
+	SphereShape3D::_bind_methods();
+}
 
-	SDFBoxShape3D(RID p_shape);
-	SDFBoxShape3D(PhysicsServer3D::ShapeType p_shape_type);
+SDFSphereShape3D::SDFSphereShape3D(RID p_shape) :
+		SphereShape3D(p_shape) {
 
-public:
+	// @TODO(MODULE_STG_SDF_PHYSICS_ENABLED) : Initialize SDF shape here
 
-	SDFBoxShape3D();
-};
+}
+
+SDFSphereShape3D::SDFSphereShape3D(PhysicsServer3D::ShapeType p_shape_type) :
+		SDFSphereShape3D(PhysicsServer3D::get_singleton()->shape_create(p_shape_type)) {
+}
+
+SDFSphereShape3D::SDFSphereShape3D() :
+		SDFSphereShape3D(PhysicsServer3D::SHAPE_SDF_SPHERE) {
+}
 
 #endif // MODULE_STG_SDF_PHYSICS_ENABLED

@@ -26,5 +26,6 @@ if not env["disable_physics_3d"]:
     env.add_source_files(env.scene_sources, "world_boundary_shape_3d.cpp")
     if env["module_stg_sdf_physics_enabled"]:
         env.add_source_files(env.scene_sources, "sdf_box_shape_3d.cpp")
+        env.add_source_files(env.scene_sources, "sdf_sphere_shape_3d.cpp")
 if not env["disable_navigation_3d"]:
     env.add_source_files(env.scene_sources, "navigation_mesh_source_geometry_data_3d.cpp")

@@ -150,6 +150,7 @@ public:
 	virtual RID custom_shape_create() override { return RID(); }
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 	virtual RID sdf_box_shape_create() override { return RID(); }
+	virtual RID sdf_sphere_shape_create() override { return RID(); }
 #endif
 
 	virtual void shape_set_data(RID p_shape, const Variant &p_data) override {}

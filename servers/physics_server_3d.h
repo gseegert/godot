@@ -265,6 +265,7 @@ public:
 		SHAPE_CUSTOM, ///< Server-Implementation based custom shape, calling shape_create() with this value will result in an error
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 		SHAPE_SDF_BOX, ///< SDF rounded box shape. Defined by vec3:"extents" and float:"roundness"
+		SHAPE_SDF_SPHERE, ///< SDF sphere shape. Defined by float:"radius"
 #endif
 	};
 
@@ -282,6 +283,7 @@ public:
 	virtual RID custom_shape_create() = 0;
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 	virtual RID sdf_box_shape_create() = 0;
+	virtual RID sdf_sphere_shape_create() = 0;
 #endif
 
 	virtual void shape_set_data(RID p_shape, const Variant &p_data) = 0;

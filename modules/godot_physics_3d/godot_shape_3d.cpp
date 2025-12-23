@@ -2260,4 +2260,9 @@ GodotSDFBoxShape3D::GodotSDFBoxShape3D() :
 	// @TODO(MODULE_STG_SDF_PHYSICS_ENABLED) : Implement
 }
 
+GodotSDFSphereShape3D::GodotSDFSphereShape3D() :
+		GodotSphereShape3D() {
+	// @TODO(MODULE_STG_SDF_PHYSICS_ENABLED) : Implement
+}
+
 #endif

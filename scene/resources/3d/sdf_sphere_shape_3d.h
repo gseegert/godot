@@ -35,23 +35,23 @@
 
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 
-#include "scene/resources/3d/box_shape_3d.h"
+#include "scene/resources/3d/sphere_shape_3d.h"
 #include "servers/physics_server_3d.h"
 
-class SDFBoxShape3D : public BoxShape3D {
-	GDCLASS(SDFBoxShape3D, BoxShape3D);
+class SDFSphereShape3D : public SphereShape3D {
+	GDCLASS(SDFSphereShape3D, SphereShape3D);
 
 protected:
 	static void _bind_methods();
 
 	virtual void _update_shape() override;
 
-	SDFBoxShape3D(RID p_shape);
-	SDFBoxShape3D(PhysicsServer3D::ShapeType p_shape_type);
+	SDFSphereShape3D(RID p_shape);
+	SDFSphereShape3D(PhysicsServer3D::ShapeType p_shape_type);
 
 public:
 
-	SDFBoxShape3D();
+	SDFSphereShape3D();
 };
 
 #endif // MODULE_STG_SDF_PHYSICS_ENABLED

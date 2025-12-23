@@ -54,6 +54,7 @@
 #include "spaces/jolt_space_3d.h"
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 #include "shapes/jolt_sdf_box_shape_3d.h"
+#include "shapes/jolt_sdf_sphere_shape_3d.h"
 #endif // MODULE_STG_SDF_PHYSICS_ENABLED
 
 JoltPhysicsServer3D::JoltPhysicsServer3D(bool p_on_separate_thread) :
@@ -138,6 +139,13 @@ RID JoltPhysicsServer3D::custom_shape_create() {
 
 RID JoltPhysicsServer3D::sdf_box_shape_create() {
 	JoltShape3D *shape = memnew(JoltBoxSDFShape3D);
+	RID rid = shape_owner.make_rid(shape);
+	shape->set_rid(rid);
+	return rid;
+}
+
+RID JoltPhysicsServer3D::sdf_sphere_shape_create() {
+	JoltShape3D *shape = memnew(JoltSphereSDFShape3D);
 	RID rid = shape_owner.make_rid(shape);
 	shape->set_rid(rid);
 	return rid;

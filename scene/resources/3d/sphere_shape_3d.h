@@ -32,6 +32,9 @@
 
 #include "scene/resources/3d/shape_3d.h"
 
+// For MODULE_STG_SDF_PHYSICS_ENABLED
+#include "modules/modules_enabled.gen.h"
+
 class ArrayMesh;
 
 class SphereShape3D : public Shape3D {
@@ -42,6 +45,12 @@ protected:
 	static void _bind_methods();
 
 	virtual void _update_shape() override;
+
+#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+
+	SphereShape3D(RID p_shape);
+
+#endif // MODULE_STG_SDF_PHYSICS_ENABLED
 
 public:
 	void set_radius(float p_radius);

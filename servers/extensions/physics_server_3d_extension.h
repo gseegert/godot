@@ -226,6 +226,7 @@ public:
 	EXBIND0R(RID, custom_shape_create)
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 	EXBIND0R(RID, sdf_box_shape_create)
+	EXBIND0R(RID, sdf_sphere_shape_create)
 #endif
 
 	EXBIND2(shape_set_data, RID, const Variant &)

@@ -92,6 +92,7 @@ public:
 	FUNCRID(custom_shape)
 #if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
 	FUNCRID(sdf_box_shape)
+	FUNCRID(sdf_sphere_shape)
 #endif
 
 	FUNC2(shape_set_data, RID, const Variant &);

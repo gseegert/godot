@@ -37,7 +37,7 @@
 
 #include "jolt_shape_3d.h"
 
-// @TODO(MODULE_STG_SDF_PHYSICS_ENABLED) : For now, the SDF implementation for Jolt will copy normal box shape
+// @TODO(MODULE_STG_SDF_PHYSICS_ENABLED) : For now, the SDF implementation for Jolt will copy normal shape
 class JoltBoxSDFShape3D final : public JoltShape3D {
 	Vector3 half_extents;
 	float margin = 0.04f;
