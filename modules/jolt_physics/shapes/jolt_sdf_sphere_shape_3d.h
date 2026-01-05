@@ -30,14 +30,14 @@
 
 #pragma once
 
-// For MODULE_STG_SDF_PHYSICS_ENABLED
+// For MODULE_M42_SDF_PHYSICS_ENABLED
 #include "modules/modules_enabled.gen.h"
 
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 
 #include "jolt_shape_3d.h"
 
-// @TODO(MODULE_STG_SDF_PHYSICS_ENABLED) : For now, the SDF implementation for Jolt will copy normal shape
+// @TODO(MODULE_M42_SDF_PHYSICS_ENABLED) : For now, the SDF implementation for Jolt will copy normal shape
 class JoltSphereSDFShape3D final : public JoltShape3D {
 	float radius = 0.0f;
 
@@ -58,4 +58,4 @@ public:
 	String to_string() const;
 };
 
-#endif // MODULE_STG_SDF_PHYSICS_ENABLED
+#endif // MODULE_M42_SDF_PHYSICS_ENABLED

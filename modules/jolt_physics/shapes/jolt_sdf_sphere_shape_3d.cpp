@@ -30,7 +30,7 @@
 
 #include "jolt_sdf_sphere_shape_3d.h"
 
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 
 #include "../misc/jolt_type_conversions.h"
 
@@ -72,4 +72,4 @@ String JoltSphereSDFShape3D::to_string() const {
 	return vformat("{radius=%f}", radius);
 }
 
-#endif // MODULE_STG_SDF_PHYSICS_ENABLED
+#endif // MODULE_M42_SDF_PHYSICS_ENABLED

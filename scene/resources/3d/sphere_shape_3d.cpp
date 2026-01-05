@@ -105,11 +105,11 @@ SphereShape3D::SphereShape3D() :
 	set_radius(0.5);
 }
 
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 
 SphereShape3D::SphereShape3D(RID p_shape) :
 		Shape3D(p_shape) {
 	set_radius(0.5);
 }
 
-#endif // MODULE_STG_SDF_PHYSICS_ENABLED
+#endif // MODULE_M42_SDF_PHYSICS_ENABLED

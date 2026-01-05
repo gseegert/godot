@@ -30,7 +30,7 @@
 
 #include "sdf_box_shape_3d.h"
 
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 
 #include "scene/resources/3d/primitive_meshes.h"
 
@@ -46,7 +46,7 @@ void SDFBoxShape3D::_bind_methods() {
 SDFBoxShape3D::SDFBoxShape3D(RID p_shape) :
 		BoxShape3D(p_shape) {
 
-	// @TODO(MODULE_STG_SDF_PHYSICS_ENABLED) : Initialize SDF shape here
+	// @TODO(MODULE_M42_SDF_PHYSICS_ENABLED) : Initialize SDF shape here
 
 }
 
@@ -58,4 +58,4 @@ SDFBoxShape3D::SDFBoxShape3D() :
 		SDFBoxShape3D(PhysicsServer3D::SHAPE_SDF_BOX) {
 }
 
-#endif // MODULE_STG_SDF_PHYSICS_ENABLED
+#endif // MODULE_M42_SDF_PHYSICS_ENABLED

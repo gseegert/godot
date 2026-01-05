@@ -119,11 +119,11 @@ BoxShape3D::BoxShape3D() :
 	set_size(Vector3(1, 1, 1));
 }
 
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 
 BoxShape3D::BoxShape3D(RID p_shape) :
 		Shape3D(p_shape) {
 	set_size(Vector3(1, 1, 1));
 }
 
-#endif // MODULE_STG_SDF_PHYSICS_ENABLED
+#endif // MODULE_M42_SDF_PHYSICS_ENABLED

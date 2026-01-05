@@ -90,7 +90,7 @@ public:
 	FUNCRID(concave_polygon_shape)
 	FUNCRID(heightmap_shape)
 	FUNCRID(custom_shape)
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 	FUNCRID(sdf_box_shape)
 	FUNCRID(sdf_sphere_shape)
 #endif

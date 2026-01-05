@@ -38,7 +38,7 @@
 #include "core/templates/rid_owner.h"
 #include "servers/physics_server_3d.h"
 
-// For MODULE_STG_SDF_PHYSICS_ENABLED
+// For MODULE_M42_SDF_PHYSICS_ENABLED
 #include "modules/modules_enabled.gen.h"
 
 class GodotPhysicsServer3D : public PhysicsServer3D {
@@ -91,7 +91,7 @@ public:
 	virtual RID concave_polygon_shape_create() override;
 	virtual RID heightmap_shape_create() override;
 	virtual RID custom_shape_create() override;
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 	virtual RID sdf_box_shape_create() override;
 	virtual RID sdf_sphere_shape_create() override;
 #endif

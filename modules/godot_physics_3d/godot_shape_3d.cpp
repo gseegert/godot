@@ -2253,16 +2253,16 @@ Variant GodotHeightMapShape3D::get_data() const {
 GodotHeightMapShape3D::GodotHeightMapShape3D() {
 }
 
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 
 GodotSDFBoxShape3D::GodotSDFBoxShape3D() :
 		GodotBoxShape3D() {
-	// @TODO(MODULE_STG_SDF_PHYSICS_ENABLED) : Implement
+	// @TODO(MODULE_M42_SDF_PHYSICS_ENABLED) : Implement
 }
 
 GodotSDFSphereShape3D::GodotSDFSphereShape3D() :
 		GodotSphereShape3D() {
-	// @TODO(MODULE_STG_SDF_PHYSICS_ENABLED) : Implement
+	// @TODO(MODULE_M42_SDF_PHYSICS_ENABLED) : Implement
 }
 
 #endif

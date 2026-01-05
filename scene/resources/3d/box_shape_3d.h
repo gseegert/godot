@@ -32,7 +32,7 @@
 
 #include "scene/resources/3d/shape_3d.h"
 
-// For MODULE_STG_SDF_PHYSICS_ENABLED
+// For MODULE_M42_SDF_PHYSICS_ENABLED
 #include "modules/modules_enabled.gen.h"
 
 class BoxShape3D : public Shape3D {
@@ -48,11 +48,11 @@ protected:
 
 	virtual void _update_shape() override;
 
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 
 	BoxShape3D(RID p_shape);
 
-#endif // MODULE_STG_SDF_PHYSICS_ENABLED
+#endif // MODULE_M42_SDF_PHYSICS_ENABLED
 
 public:
 	void set_size(const Vector3 &p_size);

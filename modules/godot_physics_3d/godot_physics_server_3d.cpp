@@ -102,7 +102,7 @@ RID GodotPhysicsServer3D::custom_shape_create() {
 	ERR_FAIL_V(RID());
 }
 
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 
 RID GodotPhysicsServer3D::sdf_box_shape_create() {
 	GodotShape3D *shape = memnew(GodotSDFBoxShape3D);

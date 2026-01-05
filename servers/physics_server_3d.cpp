@@ -691,7 +691,7 @@ RID PhysicsServer3D::shape_create(ShapeType p_shape) {
 			return heightmap_shape_create();
 		case SHAPE_CUSTOM:
 			return custom_shape_create();
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 		case SHAPE_SDF_BOX:
 			return sdf_box_shape_create();
 		case SHAPE_SDF_SPHERE:
@@ -715,7 +715,7 @@ void PhysicsServer3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("concave_polygon_shape_create"), &PhysicsServer3D::concave_polygon_shape_create);
 	ClassDB::bind_method(D_METHOD("heightmap_shape_create"), &PhysicsServer3D::heightmap_shape_create);
 	ClassDB::bind_method(D_METHOD("custom_shape_create"), &PhysicsServer3D::custom_shape_create);
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 	ClassDB::bind_method(D_METHOD("sdf_box_shape_create"), &PhysicsServer3D::sdf_box_shape_create);
 	ClassDB::bind_method(D_METHOD("sdf_sphere_shape_create"), &PhysicsServer3D::sdf_sphere_shape_create);
 #endif
@@ -1072,7 +1072,7 @@ void PhysicsServer3D::_bind_methods() {
 	BIND_ENUM_CONSTANT(SHAPE_HEIGHTMAP);
 	BIND_ENUM_CONSTANT(SHAPE_SOFT_BODY);
 	BIND_ENUM_CONSTANT(SHAPE_CUSTOM);
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 	BIND_ENUM_CONSTANT(SHAPE_SDF_BOX);
 	BIND_ENUM_CONSTANT(SHAPE_SDF_SPHERE);
 #endif

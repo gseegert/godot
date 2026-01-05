@@ -52,10 +52,10 @@
 #include "spaces/jolt_job_system.h"
 #include "spaces/jolt_physics_direct_space_state_3d.h"
 #include "spaces/jolt_space_3d.h"
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 #include "shapes/jolt_sdf_box_shape_3d.h"
 #include "shapes/jolt_sdf_sphere_shape_3d.h"
-#endif // MODULE_STG_SDF_PHYSICS_ENABLED
+#endif // MODULE_M42_SDF_PHYSICS_ENABLED
 
 JoltPhysicsServer3D::JoltPhysicsServer3D(bool p_on_separate_thread) :
 		on_separate_thread(p_on_separate_thread) {
@@ -135,7 +135,7 @@ RID JoltPhysicsServer3D::custom_shape_create() {
 	ERR_FAIL_V_MSG(RID(), "Custom shapes are not supported.");
 }
 
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 
 RID JoltPhysicsServer3D::sdf_box_shape_create() {
 	JoltShape3D *shape = memnew(JoltBoxSDFShape3D);

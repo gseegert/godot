@@ -30,7 +30,7 @@
 
 #include "sdf_sphere_shape_3d.h"
 
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 
 #include "scene/resources/3d/primitive_meshes.h"
 
@@ -46,7 +46,7 @@ void SDFSphereShape3D::_bind_methods() {
 SDFSphereShape3D::SDFSphereShape3D(RID p_shape) :
 		SphereShape3D(p_shape) {
 
-	// @TODO(MODULE_STG_SDF_PHYSICS_ENABLED) : Initialize SDF shape here
+	// @TODO(MODULE_M42_SDF_PHYSICS_ENABLED) : Initialize SDF shape here
 
 }
 
@@ -58,4 +58,4 @@ SDFSphereShape3D::SDFSphereShape3D() :
 		SDFSphereShape3D(PhysicsServer3D::SHAPE_SDF_SPHERE) {
 }
 
-#endif // MODULE_STG_SDF_PHYSICS_ENABLED
+#endif // MODULE_M42_SDF_PHYSICS_ENABLED

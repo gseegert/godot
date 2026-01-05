@@ -34,7 +34,7 @@
 #include "core/templates/local_vector.h"
 #include "servers/physics_server_3d.h"
 
-// For MODULE_STG_SDF_PHYSICS_ENABLED
+// For MODULE_M42_SDF_PHYSICS_ENABLED
 #include "modules/modules_enabled.gen.h"
 
 class GodotShape3D;
@@ -513,9 +513,9 @@ struct GodotMotionShape3D : public GodotShape3D {
 	GodotMotionShape3D() { configure(AABB()); }
 };
 
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 
-// @TODO(MODULE_STG_SDF_PHYSICS_ENABLED) : Implement SDF box shape.
+// @TODO(MODULE_M42_SDF_PHYSICS_ENABLED) : Implement SDF box shape.
 class GodotSDFBoxShape3D : public GodotBoxShape3D {
 public:
 	GodotSDFBoxShape3D();
@@ -535,7 +535,7 @@ public:
 	//virtual Variant get_data() const override;
 };
 
-// @TODO(MODULE_STG_SDF_PHYSICS_ENABLED) : Implement SDF sphere shape.
+// @TODO(MODULE_M42_SDF_PHYSICS_ENABLED) : Implement SDF sphere shape.
 class GodotSDFSphereShape3D : public GodotSphereShape3D {
 public:
 	GodotSDFSphereShape3D();

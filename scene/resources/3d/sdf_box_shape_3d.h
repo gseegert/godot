@@ -30,10 +30,10 @@
 
 #pragma once
 
-// For MODULE_STG_SDF_PHYSICS_ENABLED
+// For MODULE_M42_SDF_PHYSICS_ENABLED
 #include "modules/modules_enabled.gen.h"
 
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 
 #include "scene/resources/3d/box_shape_3d.h"
 #include "servers/physics_server_3d.h"
@@ -54,4 +54,4 @@ public:
 	SDFBoxShape3D();
 };
 
-#endif // MODULE_STG_SDF_PHYSICS_ENABLED
+#endif // MODULE_M42_SDF_PHYSICS_ENABLED

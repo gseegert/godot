@@ -30,7 +30,7 @@
 
 #include "jolt_sdf_box_shape_3d.h"
 
-#if defined(MODULE_STG_SDF_PHYSICS_ENABLED)
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 
 #include "../jolt_project_settings.h"
 #include "../misc/jolt_type_conversions.h"
@@ -84,4 +84,4 @@ AABB JoltBoxSDFShape3D::get_aabb() const {
 	return AABB(-half_extents, half_extents * 2.0f);
 }
 
-#endif // MODULE_STG_SDF_PHYSICS_ENABLED
+#endif // MODULE_M42_SDF_PHYSICS_ENABLED
