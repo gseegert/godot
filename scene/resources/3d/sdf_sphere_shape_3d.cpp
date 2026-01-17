@@ -40,7 +40,6 @@ void SDFSphereShape3D::_update_shape() {
 }
 
 void SDFSphereShape3D::_bind_methods() {
-	SphereShape3D::_bind_methods();
 }
 
 SDFSphereShape3D::SDFSphereShape3D(RID p_shape) :

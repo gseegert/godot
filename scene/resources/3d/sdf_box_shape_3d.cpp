@@ -40,7 +40,6 @@ void SDFBoxShape3D::_update_shape() {
 }
 
 void SDFBoxShape3D::_bind_methods() {
-	BoxShape3D::_bind_methods();
 }
 
 SDFBoxShape3D::SDFBoxShape3D(RID p_shape) :
