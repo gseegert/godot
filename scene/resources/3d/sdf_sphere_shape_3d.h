@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  box_shape_3d.h                                                        */
+/*  sdf_sphere_shape_3d.h                                                 */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             GODOT ENGINE                               */
@@ -50,7 +50,6 @@ protected:
 	SDFSphereShape3D(PhysicsServer3D::ShapeType p_shape_type);
 
 public:
-
 	SDFSphereShape3D();
 };
 
