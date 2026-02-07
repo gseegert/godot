@@ -2304,6 +2304,15 @@ bool sat_calculate_penetration(const GodotShape3D *p_shape_A, const Transform3D 
 	ERR_FAIL_COND_V(type_B == PhysicsServer3D::SHAPE_SEPARATION_RAY, false);
 	ERR_FAIL_COND_V(p_shape_B->is_concave(), false);
 
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
+	// SDF shapes use GJK/EPA collision detection, not SAT
+	// Reject them here to prevent out-of-bounds access to the 6x6 collision table
+	if (type_A == PhysicsServer3D::SHAPE_SDF_BOX || type_A == PhysicsServer3D::SHAPE_SDF_SPHERE ||
+			type_B == PhysicsServer3D::SHAPE_SDF_BOX || type_B == PhysicsServer3D::SHAPE_SDF_SPHERE) {
+		return false;
+	}
+#endif
+
 	static const CollisionFunc collision_table[6][6] = {
 		{ _collision_sphere_sphere<false>,
 				_collision_sphere_box<false>,

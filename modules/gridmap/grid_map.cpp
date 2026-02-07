@@ -1606,7 +1606,10 @@ void GridMap::navmesh_parse_source_geometry(const Ref<NavigationMesh> &p_navigat
 				} break;
 #if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 				case PhysicsServer3D::SHAPE_SDF_BOX: {
-					Vector3 extents = data;
+					ERR_FAIL_COND(data.get_type() != Variant::DICTIONARY);
+					Dictionary d = data;
+					ERR_FAIL_COND(!d.has("half_extents"));
+					Vector3 extents = d["half_extents"];
 					Array arr;
 					arr.resize(RS::ARRAY_MAX);
 					BoxMesh::create_mesh_array(arr, extents * 2.0);

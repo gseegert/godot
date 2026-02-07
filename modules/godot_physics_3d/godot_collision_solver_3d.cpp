@@ -429,7 +429,26 @@ bool GodotCollisionSolver3D::solve_static(const GodotShape3D *p_shape_A, const T
 		}
 
 	} else {
+#if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
+		// Try SAT first, then fall back to GJK/EPA for SDF shapes
+		bool result = collision_solver(p_shape_A, p_transform_A, p_shape_B, p_transform_B, p_result_callback, p_userdata, false, r_sep_axis, p_margin_A, p_margin_B);
+
+		// If SAT failed and either shape is an SDF shape, try GJK/EPA
+		if (!result) {
+			PhysicsServer3D::ShapeType actual_type_A = p_shape_A->get_type();
+			PhysicsServer3D::ShapeType actual_type_B = p_shape_B->get_type();
+
+			if (actual_type_A == PhysicsServer3D::SHAPE_SDF_BOX || actual_type_A == PhysicsServer3D::SHAPE_SDF_SPHERE ||
+					actual_type_B == PhysicsServer3D::SHAPE_SDF_BOX || actual_type_B == PhysicsServer3D::SHAPE_SDF_SPHERE) {
+				// SAT rejected SDF shapes, use GJK/EPA instead
+				return gjk_epa_calculate_penetration(p_shape_A, p_transform_A, p_shape_B, p_transform_B, p_result_callback, p_userdata, false, p_margin_A, p_margin_B);
+			}
+		}
+
+		return result;
+#else
 		return collision_solver(p_shape_A, p_transform_A, p_shape_B, p_transform_B, p_result_callback, p_userdata, false, r_sep_axis, p_margin_A, p_margin_B);
+#endif
 	}
 }
 

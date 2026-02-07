@@ -2255,10 +2255,141 @@ GodotHeightMapShape3D::GodotHeightMapShape3D() {
 
 #if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 
+/********** SDF BOX *************/
+
+void GodotSDFBoxShape3D::project_range(const Vector3 &p_normal, const Transform3D &p_transform, real_t &r_min, real_t &r_max) const {
+	// Use parent's conservative box projection for early-out optimization
+	GodotBoxShape3D::project_range(p_normal, p_transform, r_min, r_max);
+}
+
+Vector3 GodotSDFBoxShape3D::get_support(const Vector3 &p_normal) const {
+	real_t r = _get_rounding_radius();
+
+	// For a rounded box (Minkowski sum of box and sphere):
+	// 1. Shrink the box by r in all dimensions
+	// 2. Get support point of shrunk box
+	// 3. Add r in the support direction
+	Vector3 shrunk_extents = get_half_extents() - Vector3(r, r, r);
+	shrunk_extents = shrunk_extents.max(Vector3(0, 0, 0)); // Clamp to zero
+
+	Vector3 point = shrunk_extents * p_normal.sign();
+
+	if (r > CMP_EPSILON) {
+		point += p_normal.normalized() * r;
+	}
+
+	return point;
+}
+
+void GodotSDFBoxShape3D::get_supports(const Vector3 &p_normal, int p_max, Vector3 *r_supports, int &r_amount, FeatureType &r_type) const {
+	// Check if no rounding (likely case first)
+	if (_get_rounding_radius() <= CMP_EPSILON) {
+		// No rounding, use parent's face/edge/vertex supports
+		GodotBoxShape3D::get_supports(p_normal, p_max, r_supports, r_amount, r_type);
+	} else {
+		// Rounded box: support is typically a single point
+		// (rounding removes edges and faces as support features)
+		r_amount = 1;
+		r_type = FEATURE_POINT;
+		r_supports[0] = get_support(p_normal);
+	}
+}
+
+bool GodotSDFBoxShape3D::intersect_segment(const Vector3 &p_begin, const Vector3 &p_end, Vector3 &r_result, Vector3 &r_normal, int &r_face_index, bool p_hit_back_faces) const {
+	// Early out: test against conservative (unrounded) box first
+	Vector3 temp_result, temp_normal;
+	int temp_face;
+	if (!GodotBoxShape3D::intersect_segment(p_begin, p_end, temp_result, temp_normal, temp_face, p_hit_back_faces)) {
+		return false; // Ray doesn't hit conservative box, definitely won't hit rounded box
+	}
+
+	// Use sphere tracing for accurate SDF intersection
+	const real_t max_distance = p_begin.distance_to(p_end);
+	const Vector3 direction = (p_end - p_begin).normalized();
+
+	real_t t = 0.0;
+	Vector3 current_point = p_begin;
+
+	const int max_steps = 64;
+	const real_t epsilon = 0.001;
+
+	for (int i = 0; i < max_steps; i++) {
+		Vector3 gradient;
+		real_t dist = _sdf_distance_gradient(current_point, gradient);
+
+		if (dist < epsilon) {
+			// Hit! Use analytical gradient for normal
+			r_result = current_point;
+			r_normal = gradient;
+			r_face_index = -1;
+			return true;
+		}
+
+		t += dist;
+		if (t > max_distance) {
+			break;
+		}
+
+		current_point = p_begin + direction * t;
+	}
+
+	return false;
+}
+
+bool GodotSDFBoxShape3D::intersect_point(const Vector3 &p_point) const {
+	return _sdf_distance(p_point) <= 0.0;
+}
+
+Vector3 GodotSDFBoxShape3D::get_closest_point_to(const Vector3 &p_point) const {
+	Vector3 gradient;
+	real_t dist = _sdf_distance_gradient(p_point, gradient);
+
+	if (dist <= 0.0) {
+		// Point is inside, return the point itself
+		return p_point;
+	}
+
+	// Use analytical gradient to find closest surface point
+	return p_point - gradient * dist;
+}
+
+Vector3 GodotSDFBoxShape3D::get_moment_of_inertia(real_t p_mass) const {
+	// Use the conservative (unrounded) box for inertia calculation
+	// The rounding has minimal effect on rotational inertia
+	return GodotBoxShape3D::get_moment_of_inertia(p_mass);
+}
+
+void GodotSDFBoxShape3D::set_data(const Variant &p_data) {
+	// Accept both Vector3 (for parent class compatibility) and Dictionary (for SDF data)
+	if (p_data.get_type() == Variant::VECTOR3) {
+		// Legacy format: just half_extents, no roundness
+		GodotBoxShape3D::set_data(p_data);
+		roundness = 0.0;
+	} else if (p_data.get_type() == Variant::DICTIONARY) {
+		// New format: half_extents + roundness
+		Dictionary d = p_data;
+		ERR_FAIL_COND(!d.has("half_extents"));
+		ERR_FAIL_COND(!d.has("roundness"));
+
+		GodotBoxShape3D::set_data(d["half_extents"]);
+		roundness = CLAMP((real_t)d["roundness"], 0.0, 1.0);
+	} else {
+		ERR_FAIL_MSG("SDFBoxShape3D::set_data expects Vector3 or Dictionary");
+	}
+}
+
+Variant GodotSDFBoxShape3D::get_data() const {
+	Dictionary d;
+	d["half_extents"] = get_half_extents();
+	d["roundness"] = roundness;
+	return d;
+}
+
 GodotSDFBoxShape3D::GodotSDFBoxShape3D() :
 		GodotBoxShape3D() {
-	// @TODO(MODULE_M42_SDF_PHYSICS_ENABLED) : Implement
 }
+
+/********** SDF SPHERE *************/
 
 GodotSDFSphereShape3D::GodotSDFSphereShape3D() :
 		GodotSphereShape3D() {

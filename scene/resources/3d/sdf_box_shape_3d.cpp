@@ -34,19 +34,31 @@
 
 #include "scene/resources/3d/primitive_meshes.h"
 
+void SDFBoxShape3D::set_roundness(real_t p_roundness) {
+	ERR_FAIL_COND_MSG(p_roundness < 0.0 || p_roundness > 1.0, "SDFBoxShape3D roundness must be between 0.0 and 1.0.");
+	roundness = p_roundness;
+	_update_shape();
+	emit_changed();
+}
 
 void SDFBoxShape3D::_update_shape() {
-	BoxShape3D::_update_shape();
+	// Send both half_extents and roundness to physics server
+	Dictionary d;
+	d["half_extents"] = get_size() / 2;
+	d["roundness"] = roundness;
+	PhysicsServer3D::get_singleton()->shape_set_data(get_shape(), d);
+	Shape3D::_update_shape();
 }
 
 void SDFBoxShape3D::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("set_roundness", "roundness"), &SDFBoxShape3D::set_roundness);
+	ClassDB::bind_method(D_METHOD("get_roundness"), &SDFBoxShape3D::get_roundness);
+
+	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "roundness", PROPERTY_HINT_RANGE, "0.0,1.0,0.01"), "set_roundness", "get_roundness");
 }
 
 SDFBoxShape3D::SDFBoxShape3D(RID p_shape) :
 		BoxShape3D(p_shape) {
-
-	// @TODO(MODULE_M42_SDF_PHYSICS_ENABLED) : Initialize SDF shape here
-
 }
 
 SDFBoxShape3D::SDFBoxShape3D(PhysicsServer3D::ShapeType p_shape_type) :
@@ -55,6 +67,7 @@ SDFBoxShape3D::SDFBoxShape3D(PhysicsServer3D::ShapeType p_shape_type) :
 
 SDFBoxShape3D::SDFBoxShape3D() :
 		SDFBoxShape3D(PhysicsServer3D::SHAPE_SDF_BOX) {
+	set_roundness(0.0);
 }
 
 #endif // MODULE_M42_SDF_PHYSICS_ENABLED

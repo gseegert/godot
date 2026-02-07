@@ -40,12 +40,13 @@
 // @TODO(MODULE_M42_SDF_PHYSICS_ENABLED) : For now, the SDF implementation for Jolt will copy normal shape
 class JoltBoxSDFShape3D final : public JoltShape3D {
 	Vector3 half_extents;
+	float roundness = 0.0f;
 	float margin = 0.04f;
 
 	virtual JPH::ShapeRefC _build() const override;
 
 public:
-	virtual ShapeType get_type() const override { return ShapeType::SHAPE_BOX; }
+	virtual ShapeType get_type() const override { return ShapeType::SHAPE_SDF_BOX; }
 	virtual bool is_convex() const override { return true; }
 
 	virtual Variant get_data() const override;

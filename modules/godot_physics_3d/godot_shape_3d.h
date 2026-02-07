@@ -515,24 +515,65 @@ struct GodotMotionShape3D : public GodotShape3D {
 
 #if defined(MODULE_M42_SDF_PHYSICS_ENABLED)
 
-// @TODO(MODULE_M42_SDF_PHYSICS_ENABLED) : Implement SDF box shape.
 class GodotSDFBoxShape3D : public GodotBoxShape3D {
+	real_t roundness = 0.0;
+
+	_FORCE_INLINE_ real_t _get_rounding_radius() const {
+		real_t min_half_extent = MIN(get_half_extents().x, MIN(get_half_extents().y, get_half_extents().z));
+		return roundness * min_half_extent;
+	}
+
+	// Inigo Quilez's rounded box SDF (distance only)
+	// half_extents is the outer bounding box, base box is shrunk to fit rounding inside
+	_FORCE_INLINE_ real_t _sdf_distance(const Vector3 &p_point) const {
+		const real_t r = _get_rounding_radius();
+		const Vector3 shrunk_extents = get_half_extents() - Vector3(r, r, r);
+		const Vector3 q = p_point.abs() - shrunk_extents;
+		return q.max(Vector3(0, 0, 0)).length() + MIN(MAX(q.x, MAX(q.y, q.z)), 0.0) - r;
+	}
+
+	// Inigo Quilez's rounded box SDF with analytical derivative
+	// Returns distance, stores normalized gradient in r_gradient
+	// half_extents is the outer bounding box, base box is shrunk to fit rounding inside
+	_FORCE_INLINE_ real_t _sdf_distance_gradient(const Vector3 &p_point, Vector3 &r_gradient) const {
+		const real_t r = _get_rounding_radius();
+		const Vector3 shrunk_extents = get_half_extents() - Vector3(r, r, r);
+		const Vector3 w = p_point.abs() - shrunk_extents;
+		const Vector3 s = Vector3(
+			p_point.x < 0.0 ? -1.0 : 1.0,
+			p_point.y < 0.0 ? -1.0 : 1.0,
+			p_point.z < 0.0 ? -1.0 : 1.0
+		);
+		const real_t g = MAX(w.x, MAX(w.y, w.z));
+		const Vector3 q = w.max(Vector3(0, 0, 0));
+		const real_t l = q.length();
+
+		// Gradient (normalized)
+		// Avoid division by zero when point is exactly on a face
+		r_gradient = (g > 0.0 && l > 0.0) ? (q / l) : s;
+
+		// Distance
+		return l + MIN(g, 0.0) - r;
+	}
+
 public:
 	GodotSDFBoxShape3D();
-	virtual ~GodotSDFBoxShape3D() { }
+	virtual ~GodotSDFBoxShape3D() {}
 
 	virtual PhysicsServer3D::ShapeType get_type() const override { return PhysicsServer3D::SHAPE_SDF_BOX; }
 
-	//virtual void project_range(const Vector3 &p_normal, const Transform3D &p_transform, real_t &r_min, real_t &r_max) const override;
-	//virtual Vector3 get_support(const Vector3 &p_normal) const override;
-	//virtual void get_supports(const Vector3 &p_normal, int p_max, Vector3 *r_supports, int &r_amount, FeatureType &r_type) const override;
-	//virtual bool intersect_segment(const Vector3 &p_begin, const Vector3 &p_end, Vector3 &r_result, Vector3 &r_normal, int &r_face_index, bool p_hit_back_faces) const override;
-	//virtual bool intersect_point(const Vector3 &p_point) const override;
-	//virtual Vector3 get_closest_point_to(const Vector3 &p_point) const override;
-	//virtual Vector3 get_moment_of_inertia(real_t p_mass) const override;
+	virtual void project_range(const Vector3 &p_normal, const Transform3D &p_transform, real_t &r_min, real_t &r_max) const override;
+	virtual Vector3 get_support(const Vector3 &p_normal) const override;
+	virtual void get_supports(const Vector3 &p_normal, int p_max, Vector3 *r_supports, int &r_amount, FeatureType &r_type) const override;
+	virtual bool intersect_segment(const Vector3 &p_begin, const Vector3 &p_end, Vector3 &r_result, Vector3 &r_normal, int &r_face_index, bool p_hit_back_faces) const override;
+	virtual bool intersect_point(const Vector3 &p_point) const override;
+	virtual Vector3 get_closest_point_to(const Vector3 &p_point) const override;
+	virtual Vector3 get_moment_of_inertia(real_t p_mass) const override;
 
-	//virtual void set_data(const Variant &p_data) override;
-	//virtual Variant get_data() const override;
+	virtual void set_data(const Variant &p_data) override;
+	virtual Variant get_data() const override;
+
+	_FORCE_INLINE_ real_t get_roundness() const { return roundness; }
 };
 
 // @TODO(MODULE_M42_SDF_PHYSICS_ENABLED) : Implement SDF sphere shape.

@@ -44,7 +44,7 @@ class JoltSphereSDFShape3D final : public JoltShape3D {
 	virtual JPH::ShapeRefC _build() const override;
 
 public:
-	virtual ShapeType get_type() const override { return ShapeType::SHAPE_SPHERE; }
+	virtual ShapeType get_type() const override { return ShapeType::SHAPE_SDF_SPHERE; }
 	virtual bool is_convex() const override { return true; }
 
 	virtual Variant get_data() const override;

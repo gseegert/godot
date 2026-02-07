@@ -41,6 +41,8 @@
 class SDFBoxShape3D : public BoxShape3D {
 	GDCLASS(SDFBoxShape3D, BoxShape3D);
 
+	real_t roundness = 0.0;
+
 protected:
 	static void _bind_methods();
 
@@ -50,6 +52,8 @@ protected:
 	SDFBoxShape3D(PhysicsServer3D::ShapeType p_shape_type);
 
 public:
+	void set_roundness(real_t p_roundness);
+	_FORCE_INLINE_ real_t get_roundness() const { return roundness; }
 
 	SDFBoxShape3D();
 };

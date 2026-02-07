@@ -50,18 +50,40 @@ JPH::ShapeRefC JoltBoxSDFShape3D::_build() const {
 }
 
 Variant JoltBoxSDFShape3D::get_data() const {
-	return half_extents;
+	Dictionary d;
+	d["half_extents"] = half_extents;
+	d["roundness"] = roundness;
+	return d;
 }
 
 void JoltBoxSDFShape3D::set_data(const Variant &p_data) {
-	ERR_FAIL_COND(p_data.get_type() != Variant::VECTOR3);
+	// Accept both Vector3 (for parent class compatibility) and Dictionary (for SDF data)
+	Vector3 new_half_extents;
+	float new_roundness = 0.0f;
 
-	const Vector3 new_half_extents = p_data;
-	if (unlikely(new_half_extents == half_extents)) {
+	if (p_data.get_type() == Variant::VECTOR3) {
+		// Legacy format: just half_extents, no roundness
+		new_half_extents = p_data;
+		new_roundness = 0.0f;
+	} else if (p_data.get_type() == Variant::DICTIONARY) {
+		// New format: half_extents + roundness
+		Dictionary d = p_data;
+		ERR_FAIL_COND(!d.has("half_extents"));
+		ERR_FAIL_COND(!d.has("roundness"));
+
+		new_half_extents = d["half_extents"];
+		new_roundness = d["roundness"];
+	} else {
+		ERR_FAIL_MSG("JoltBoxSDFShape3D::set_data expects Vector3 or Dictionary");
+		return;
+	}
+
+	if (unlikely(new_half_extents == half_extents && new_roundness == roundness)) {
 		return;
 	}
 
 	half_extents = new_half_extents;
+	roundness = CLAMP(new_roundness, 0.0f, 1.0f);
 
 	destroy();
 }
@@ -77,7 +99,7 @@ void JoltBoxSDFShape3D::set_margin(float p_margin) {
 }
 
 String JoltBoxSDFShape3D::to_string() const {
-	return vformat("{half_extents=%v margin=%f}", half_extents, margin);
+	return vformat("{half_extents=%v roundness=%f margin=%f}", half_extents, roundness, margin);
 }
 
 AABB JoltBoxSDFShape3D::get_aabb() const {
