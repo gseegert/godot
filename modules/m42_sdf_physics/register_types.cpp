@@ -30,15 +30,43 @@
 
 #include "register_types.h"
 
+#include "scene/main/scene_tree.h"
+
+// SDF material system
+#include "sdf_material_3d.h"
+
+// SDF mesh instance nodes (rendering)
+#include "nodes/sdf_mesh_instance_3d.h"
+#include "nodes/sdf_box_mesh_instance_3d.h"
+#include "nodes/sdf_sphere_mesh_instance_3d.h"
 
 void initialize_m42_sdf_physics_module(ModuleInitializationLevel p_level) {
 	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
 	}
+
+	// Register SDF material
+	GDREGISTER_CLASS(SDFMaterial3D);
+
+	// Register SDF mesh instance nodes (rendering only)
+	// Note: SDFBoxShape3D and SDFSphereShape3D are registered in core engine
+	GDREGISTER_ABSTRACT_CLASS(SDFMeshInstance3D);
+	GDREGISTER_CLASS(SDFBoxMeshInstance3D);
+	GDREGISTER_CLASS(SDFSphereMeshInstance3D);
+
+	// Register flush callback to be called each frame before rendering (same pattern as BaseMaterial3D)
+	// This processes the dirty materials list and updates shaders in batch
+	SceneTree::add_idle_callback(SDFMaterial3D::flush_changes);
+
+	// Initialize shader system
+	SDFMaterial3D::init_shaders();
 }
 
 void uninitialize_m42_sdf_physics_module(ModuleInitializationLevel p_level) {
 	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
 	}
+
+	// Clean up shader system
+	SDFMaterial3D::finish_shaders();
 }

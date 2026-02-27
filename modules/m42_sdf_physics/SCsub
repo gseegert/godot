@@ -6,11 +6,12 @@ Import("env_modules")
 
 env_m42_sdf_physics = env_modules.Clone()
 
-# NOTE: For rendering module this may be helpful!
-# env_lightmapper_rd.GLSL_HEADER("lm_raster.glsl")
-# env_lightmapper_rd.GLSL_HEADER("lm_compute.glsl")
-# env_lightmapper_rd.GLSL_HEADER("lm_blendseams.glsl")
-# env_lightmapper_rd.Depends(Glob("*.glsl.gen.h"), ["lm_common_inc.glsl", "#glsl_builders.py"])
+# Generate shader header from .glsl file
+env_m42_sdf_physics.GLSL_HEADER("shaders/sdf_raymarch_inc.glsl")
+env_m42_sdf_physics.Depends(Glob("shaders/*.glsl.gen.h"), ["shaders/sdf_raymarch_inc.glsl", "#glsl_builders.py"])
 
-# Add module source files
+# Add module source files (material system)
 env_m42_sdf_physics.add_source_files(env.modules_sources, "*.cpp")
+
+# Add SDF rendering nodes (subdirectory)
+env_m42_sdf_physics.add_source_files(env.modules_sources, "nodes/*.cpp")
