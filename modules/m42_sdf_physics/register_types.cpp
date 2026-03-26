@@ -37,8 +37,8 @@
 
 // SDF mesh instance nodes (rendering)
 #include "nodes/sdf_mesh_instance_3d.h"
-#include "nodes/sdf_box_mesh_instance_3d.h"
-#include "nodes/sdf_sphere_mesh_instance_3d.h"
+#include "nodes/sdf_mesh_instance_3d_box.h"
+#include "nodes/sdf_mesh_instance_3d_sphere.h"
 
 void initialize_m42_sdf_physics_module(ModuleInitializationLevel p_level) {
 	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {

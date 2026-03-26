@@ -4,7 +4,7 @@
 /*                   SDF Physics Module - Box Shape                       */
 /**************************************************************************/
 
-#include "sdf_box_mesh_instance_3d.h"
+#include "sdf_mesh_instance_3d_box.h"
 #include "servers/rendering_server.h"
 
 SDFBoxMeshInstance3D::SDFBoxMeshInstance3D() {
@@ -189,20 +189,12 @@ void SDFBoxMeshInstance3D::_update_shader_parameters() {
 // ============================================================================
 
 Ref<Shape3D> SDFBoxMeshInstance3D::_create_physics_shape() {
-#ifdef MODULE_M42_SDF_PHYSICS_ENABLED
 	// Create SDF box shape if available
 	Ref<SDFBoxShape3D> shape;
 	shape.instantiate();
 	shape->set_size(size);
 	shape->set_roundness(roundness);
 	return shape;
-#else
-	// Fallback: standard BoxShape3D
-	Ref<BoxShape3D> shape;
-	shape.instantiate();
-	shape->set_size(size);
-	return shape;
-#endif
 }
 
 // ============================================================================

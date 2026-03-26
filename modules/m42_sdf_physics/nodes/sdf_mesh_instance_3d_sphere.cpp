@@ -4,7 +4,7 @@
 /*                   SDF Physics Module - Sphere Shape                    */
 /**************************************************************************/
 
-#include "sdf_sphere_mesh_instance_3d.h"
+#include "sdf_mesh_instance_3d_sphere.h"
 #include "core/math/math_defs.h"
 #include "servers/rendering_server.h"
 
@@ -179,19 +179,11 @@ void SDFSphereMeshInstance3D::_update_shader_parameters() {
 // ============================================================================
 
 Ref<Shape3D> SDFSphereMeshInstance3D::_create_physics_shape() {
-#ifdef MODULE_M42_SDF_PHYSICS_ENABLED
 	// Create SDF sphere shape if available
 	Ref<SDFSphereShape3D> shape;
 	shape.instantiate();
 	shape->set_radius(radius);
 	return shape;
-#else
-	// Fallback: standard SphereShape3D
-	Ref<SphereShape3D> shape;
-	shape.instantiate();
-	shape->set_radius(radius);
-	return shape;
-#endif
 }
 
 // ============================================================================
